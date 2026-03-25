@@ -147,7 +147,7 @@
             margin-top: 10px;
         }
 
-        /* Mode Selection - 3 Buttons */
+        /* Mode Selection */
         .mode-section {
             text-align: center;
             margin-bottom: 25px;
@@ -542,24 +542,86 @@
     </div>
 
     <script>
-        // ========== قاعدة الأسئلة ==========
-        const questionsDatabase = [
+        // ========== قاعدة الأسئلة - متوازنة بين المواد ==========
+        const englishQuestions = [
             { question: "I am completely ............ about my exam results – I never thought I’d do so well!", options: ["inspirational", "slimy", "ecstatic", "hypocritical"], correct: 2, subject: "🇬🇧 إنجليزي" },
             { question: "We couldn't use our mobile phones in the desert, but started to............ signals when we went into the mountains.", options: ["show off", "pick up", "point out", "calm down"], correct: 1, subject: "🇬🇧 إنجليزي" },
             { question: "It is claimed that ............ from cars kill twice as many people as accidents caused by vehicles.", options: ["wind turbines", "fossil fuels", "endangered species", "exhaust fumes"], correct: 3, subject: "🇬🇧 إنجليزي" },
-            { question: "Tigers – the largest living cats on Earth – are at the top of their food chain so they have no ............ predators.", options: ["torrential", "scorching", "bewildered", "natural"], correct: 3, subject: "🇬🇧 إنجليزي" },
-            { question: "Rami ............; whenever arguments happen, he resolves conflicts.", options: ["blows things out of proportion", "spells out", "is the peacemaker", "bursts into tears"], correct: 2, subject: "🇬🇧 إنجليزي" },
-            { question: "معنى (تُؤْفَكُونَ) في قوله تعالى: ﴿ذَٰلِكُمُ اللَّهُ ۖ فَأَنَّىٰ تُؤْفَكُونَ﴾ هو:", options: ["تُسِيئُونَ إِلَى الْآخَرِينَ", "تُصَدُّونَ عَنِ السَّبِيلِ", "تَرْجُونَ اللهَ تَعَالَى", "تَمْتَنِعُونَ عَنِ المَعَاصِي"], correct: 1, subject: "🇸🇦 عربي" },
-            { question: "المعنى البلاغي الذي خرج إليه الاستفهام في قوله تعالى: ﴿وَمَنْ أَحْسَنُ قَوْلًا مِمَّنْ دَعَا إِلَى اللَّهِ وَعَمِلَ صَالِحًا﴾ هو:", options: ["النَّفْي", "التَّهْوِيل", "الإِنْكَار", "التَّمَنِّي"], correct: 0, subject: "🇸🇦 عربي" },
-            { question: "قول الله تعالى الذي يشير إلى الاعتبار من الأمم السابقة:", options: ["﴿وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا﴾", "﴿وَلَا تَكُونُوا كَالَّذِينَ تَفَرَّقُوا وَاخْتَلَفُوا مِنْ بَعْدِ مَا جَاءَهُمُ الْبَيِّنَاتُ﴾", "﴿وَلْتَكُنْ مِنْكُمْ أُمَّةٌ يَدْعُونَ إِلَى الْخَيْرِ﴾", "﴿يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ حَقَّ تُقَاتِهِ﴾"], correct: 1, subject: "🕋 تربية إسلامية" },
-            { question: "يكون انتقاء الشبهات إذا أصابت النجاسة جزءاً من الثوب، ولم يعلم صاحبه موضعها بغسل:", options: ["جزء من الثوب", "نصف الثوب", "أكثر الثوب", "الثوب كله"], correct: 3, subject: "🕋 تربية إسلامية" },
-            { question: "تبدأ عصور ما قبل التاريخ من نشأة الإنسان على الأرض حتى:", options: ["بداية استخدام معدن البرونز", "بداية ظهور دويلات المدن", "بداية اختراع الكتابة", "بداية استخدام معدن النحاس"], correct: 2, subject: "🏛️ تاريخ" }
+            { question: "The opposite of 'expensive' is:", options: ["cheap", "costly", "dear", "pricey"], correct: 0, subject: "🇬🇧 إنجليزي" },
+            { question: "What is the past tense of 'go'?", options: ["goed", "went", "gone", "going"], correct: 1, subject: "🇬🇧 إنجليزي" }
         ];
 
-        let fullQuestions = [...questionsDatabase];
-        for(let i = 0; i < 10; i++) {
-            fullQuestions = [...fullQuestions, ...questionsDatabase];
+        const arabicQuestions = [
+            { question: "معنى (تُؤْفَكُونَ) في قوله تعالى: ﴿ذَٰلِكُمُ اللَّهُ ۖ فَأَنَّىٰ تُؤْفَكُونَ﴾ هو:", options: ["تُسِيئُونَ إِلَى الْآخَرِينَ", "تُصَدُّونَ عَنِ السَّبِيلِ", "تَرْجُونَ اللهَ تَعَالَى", "تَمْتَنِعُونَ عَنِ المَعَاصِي"], correct: 1, subject: "🇸🇦 عربي" },
+            { question: "المعنى البلاغي الذي خرج إليه الاستفهام في قوله تعالى: ﴿وَمَنْ أَحْسَنُ قَوْلًا مِمَّنْ دَعَا إِلَى اللَّهِ وَعَمِلَ صَالِحًا﴾ هو:", options: ["النَّفْي", "التَّهْوِيل", "الإِنْكَار", "التَّمَنِّي"], correct: 0, subject: "🇸🇦 عربي" },
+            { question: "وصَفَ الشاعرُ مدينة عمان في البيت الشعري (باحتْ بأحلامِنا النَّجوى وردَّدَها / واديكِ، وانطلقتْ خلفَ البِطاحِ رُبى) بأنها:", options: ["متنوعة التضاريس", "صامدة رغم التحديات", "مركز الحضارة", "متبخترة ومتمايلة في المَشْي"], correct: 0, subject: "🇸🇦 عربي" },
+            { question: "جمع كلمة 'كتاب' هو:", options: ["كتبة", "كتب", "كتابات", "مكتب"], correct: 1, subject: "🇸🇦 عربي" },
+            { question: "المضاد لكلمة 'جديد' هو:", options: ["حديث", "قديم", "عتيق", "جديد"], correct: 1, subject: "🇸🇦 عربي" }
+        ];
+
+        const islamicQuestions = [
+            { question: "قول الله تعالى الذي يشير إلى الاعتبار من الأمم السابقة:", options: ["﴿وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا﴾", "﴿وَلَا تَكُونُوا كَالَّذِينَ تَفَرَّقُوا وَاخْتَلَفُوا مِنْ بَعْدِ مَا جَاءَهُمُ الْبَيِّنَاتُ﴾", "﴿وَلْتَكُنْ مِنْكُمْ أُمَّةٌ يَدْعُونَ إِلَى الْخَيْرِ﴾", "﴿يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ حَقَّ تُقَاتِهِ﴾"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "يكون انتقاء الشبهات إذا أصابت النجاسة جزءاً من الثوب، ولم يعلم صاحبه موضعها بغسل:", options: ["جزء من الثوب", "نصف الثوب", "أكثر الثوب", "الثوب كله"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "من صور الكفر العملي التي تخرج صاحبها من الإسلام:", options: ["إنكار ركن من أركان الإيمان", "سب الذات الإلهية", "إنكار حكم قطعي معلوم من الدين بالضرورة", "قتال المسلم للمسلم"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "عدد أركان الإسلام:", options: ["ثلاثة", "أربعة", "خمسة", "ستة"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "أول ما خلق الله:", options: ["العرش", "القلم", "السماء", "الأرض"], correct: 1, subject: "🕋 تربية إسلامية" }
+        ];
+
+        const historyQuestions = [
+            { question: "تبدأ عصور ما قبل التاريخ من نشأة الإنسان على الأرض حتى:", options: ["بداية استخدام معدن البرونز", "بداية ظهور دويلات المدن", "بداية اختراع الكتابة", "بداية استخدام معدن النحاس"], correct: 2, subject: "🏛️ تاريخ" },
+            { question: "الترتيب الصحيح لأبرز الإنجازات الحضارية في العصور الحجرية:", options: ["اكتشاف الزراعة وإنتاج الطعام، اكتشاف النار، اختراع الكتابة", "اكتشاف الزراعة وإنتاج الطعام، تدجين الحيوانات، اختراع الكتابة", "اختراع الكتابة، اكتشاف النار وصهر المعادن، تدجين الحيوانات", "اختراع الكتابة، تدجين الحيوانات، اكتشاف النار وصهر المعادن"], correct: 0, subject: "🏛️ تاريخ" },
+            { question: "معركة اليرموك كانت بين المسلمين و:", options: ["الفرس", "الروم", "المغول", "الصليبيين"], correct: 1, subject: "🏛️ تاريخ" },
+            { question: "متى استقل الأردن؟", options: ["1946", "1948", "1950", "1952"], correct: 0, subject: "🏛️ تاريخ" },
+            { question: "من هو قائد معركة مؤتة؟", options: ["زيد بن حارثة", "خالد بن الوليد", "أبو بكر الصديق", "عمر بن الخطاب"], correct: 0, subject: "🏛️ تاريخ" }
+        ];
+
+        // دالة لاختيار أسئلة متوازنة (إنجليزي، عربي، دين، تاريخ، ثم يعيد)
+        function getBalancedQuestions(count) {
+            let result = [];
+            let englishIndex = 0, arabicIndex = 0, islamicIndex = 0, historyIndex = 0;
+            
+            // خلط كل مصفوفة
+            function shuffle(arr) {
+                for(let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+            
+            const shuffledEnglish = shuffle([...englishQuestions]);
+            const shuffledArabic = shuffle([...arabicQuestions]);
+            const shuffledIslamic = shuffle([...islamicQuestions]);
+            const shuffledHistory = shuffle([...historyQuestions]);
+            
+            let subjects = ['english', 'arabic', 'islamic', 'history'];
+            let subjectIndex = 0;
+            
+            for(let i = 0; i < count; i++) {
+                let currentSubject = subjects[subjectIndex % 4];
+                
+                if(currentSubject === 'english' && englishIndex < shuffledEnglish.length) {
+                    result.push(shuffledEnglish[englishIndex++]);
+                } else if(currentSubject === 'arabic' && arabicIndex < shuffledArabic.length) {
+                    result.push(shuffledArabic[arabicIndex++]);
+                } else if(currentSubject === 'islamic' && islamicIndex < shuffledIslamic.length) {
+                    result.push(shuffledIslamic[islamicIndex++]);
+                } else if(currentSubject === 'history' && historyIndex < shuffledHistory.length) {
+                    result.push(shuffledHistory[historyIndex++]);
+                } else {
+                    // لو خلصت أسئلة من مادة معينة، ناخذ من المواد الثانية
+                    if(englishIndex < shuffledEnglish.length) result.push(shuffledEnglish[englishIndex++]);
+                    else if(arabicIndex < shuffledArabic.length) result.push(shuffledArabic[arabicIndex++]);
+                    else if(islamicIndex < shuffledIslamic.length) result.push(shuffledIslamic[islamicIndex++]);
+                    else if(historyIndex < shuffledHistory.length) result.push(shuffledHistory[historyIndex++]);
+                }
+                subjectIndex++;
+            }
+            
+            return result;
         }
+
+        let fullQuestions = getBalancedQuestions(50);
 
         function shuffleArray(arr) {
             for(let i = arr.length - 1; i > 0; i--) {
@@ -578,11 +640,9 @@
         let userAnswers = [];
         let quizActive = false;
         
-        // إحصائيات
         let totalCorrect = 0;
         let totalWrong = 0;
         
-        // العداد
         let countdownEndTime = null;
         let countdownInterval = null;
         
@@ -614,7 +674,6 @@
             updateStatsDisplay();
         }
         
-        // ========== العداد ==========
         function loadCountdown() {
             const saved = localStorage.getItem('countdownEndTime');
             if(saved) {
@@ -665,7 +724,6 @@
             updateTimerDisplay();
         }
         
-        // ========== منطق اللعبة ==========
         function selectMode(mode) {
             selectedMode = mode;
             
@@ -714,8 +772,7 @@
             if(!selectedMode) return;
             
             let questionCount = parseInt(selectedMode);
-            const shuffled = shuffleArray([...fullQuestions]);
-            currentQuestions = shuffled.slice(0, questionCount);
+            currentQuestions = getBalancedQuestions(questionCount);
             currentIndex = 0;
             selectedAnswers = new Array(questionCount).fill(null);
             answered = false;
@@ -825,7 +882,7 @@
                         <h3>📝 مراجعة الإجابات</h3>
                         ${userAnswers.map((a, i) => `
                             <div class="review-item ${a.correct ? 'correct' : 'incorrect'}">
-                                <div class="review-question">${i+1}. ${a.question.question}</div>
+                                <div class="review-question">${i+1}. [${a.question.subject}] ${a.question.question}</div>
                                 <div class="review-answer">✅ إجابتك: ${a.question.options[a.selected]}</div>
                                 <div class="review-answer">📖 الإجابة الصحيحة: ${a.question.options[a.question.correct]}</div>
                             </div>
