@@ -55,7 +55,6 @@
             color: #5d6d7e;
         }
 
-        /* Stats Bar */
         .stats-bar {
             display: flex;
             justify-content: space-between;
@@ -114,7 +113,6 @@
             transform: translateY(-2px);
         }
 
-        /* Timer Section */
         .timer-section {
             background: linear-gradient(145deg, #1e2a36, #2c3e50);
             border-radius: 40px;
@@ -147,7 +145,6 @@
             margin-top: 10px;
         }
 
-        /* Mode Selection */
         .mode-section {
             text-align: center;
             margin-bottom: 25px;
@@ -196,7 +193,6 @@
             margin-top: 5px;
         }
 
-        /* Confirm Section */
         .confirm-section {
             background: #fef9e7;
             border-radius: 40px;
@@ -234,20 +230,11 @@
             color: white;
         }
 
-        .confirm-yes:hover {
-            background: #229954;
-        }
-
         .confirm-no {
             background: #e67e22;
             color: white;
         }
 
-        .confirm-no:hover {
-            background: #d35400;
-        }
-
-        /* Start Button */
         .start-btn {
             width: 100%;
             padding: 15px;
@@ -267,7 +254,6 @@
             box-shadow: 0 10px 25px rgba(241, 196, 15, 0.4);
         }
 
-        /* Question Box */
         .question-box {
             background: white;
             border-radius: 35px;
@@ -380,7 +366,6 @@
             transition: width 0.3s;
         }
 
-        /* Results Modal */
         .results-modal {
             position: fixed;
             top: 0;
@@ -470,7 +455,6 @@
             <div class="student-name">عبدالرحمن المعايطه</div>
         </div>
 
-        <!-- Stats Bar -->
         <div class="stats-bar">
             <div class="stats-left">
                 <div class="stat-item correct">
@@ -482,50 +466,34 @@
                     <div class="stat-label">خطأ</div>
                 </div>
             </div>
-            <button class="settings-icon" id="settingsBtn">
-                ⚙️ إعدادات
-            </button>
+            <button class="settings-icon" id="settingsBtn">⚙️ إعدادات</button>
         </div>
 
-        <!-- Timer Section -->
         <div class="timer-section">
             <div class="timer-label">⏰ الوقت المتبقي للسؤال القادم</div>
             <div class="timer-display" id="timerDisplay">--:--:--</div>
             <div class="next-note" id="nextNote">سوف يتم تحميل السؤال التالي بعد الفترة المقطوعة</div>
         </div>
 
-        <!-- Mode Selection -->
         <div id="modeSection" class="mode-section">
             <div class="mode-title">🎯 اختر عدد الأسئلة</div>
             <div class="mode-buttons">
-                <div class="mode-btn" data-mode="1">
-                    <div class="mode-number">1</div>
-                    <div class="mode-text">سؤال</div>
-                </div>
-                <div class="mode-btn" data-mode="5">
-                    <div class="mode-number">5</div>
-                    <div class="mode-text">أسئلة</div>
-                </div>
-                <div class="mode-btn" data-mode="10">
-                    <div class="mode-number">10</div>
-                    <div class="mode-text">أسئلة</div>
-                </div>
+                <div class="mode-btn" data-mode="1"><div class="mode-number">1</div><div class="mode-text">سؤال</div></div>
+                <div class="mode-btn" data-mode="5"><div class="mode-number">5</div><div class="mode-text">أسئلة</div></div>
+                <div class="mode-btn" data-mode="10"><div class="mode-number">10</div><div class="mode-text">أسئلة</div></div>
             </div>
         </div>
 
-        <!-- Confirm Section -->
         <div id="confirmSection" class="confirm-section hidden">
-            <div class="confirm-question" id="confirmQuestion">هل تريد التأكيد؟</div>
+            <div class="confirm-question">هل تريد التأكيد؟</div>
             <div class="confirm-buttons">
                 <button class="confirm-yes" id="confirmYes">نعم</button>
                 <button class="confirm-no" id="confirmNo">لا</button>
             </div>
         </div>
 
-        <!-- Start Button -->
         <button id="startBtn" class="start-btn hidden">🚀 ابدأ التحدي</button>
 
-        <!-- Question Box -->
         <div id="questionBox" class="question-box hidden">
             <div class="question-header">
                 <div class="question-counter" id="questionCounter">السؤال 1 من 1</div>
@@ -533,95 +501,108 @@
             </div>
             <div class="question-text" id="questionText"></div>
             <div class="options" id="optionsContainer"></div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-            </div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
             <button class="submit-btn" id="submitBtn">✅ تأكيد الإجابة</button>
             <button class="next-btn hidden" id="nextBtn">➡️ السؤال التالي</button>
         </div>
     </div>
 
     <script>
-        // ========== قاعدة الأسئلة - متوازنة بين المواد ==========
+        // ========== الأسئلة من ملفاتك بالضبط ==========
+        
+        // التربية الإسلامية - 40 سؤال (من ملفك)
+        const islamicQuestions = [
+            { question: "قول الله تعالى الذي يشير إلى الاعتبار من الأمم السابقة، هو:", options: ["﴿وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا﴾", "﴿وَلَا تَكُونُوا كَالَّذِينَ تَفَرَّقُوا وَاخْتَلَفُوا مِنْ بَعْدِ مَا جَاءَهُمُ الْبَيِّنَاتُ﴾", "﴿وَلْتَكُنْ مِنْكُمْ أُمَّةٌ يَدْعُونَ إِلَى الْخَيْرِ﴾", "﴿يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ حَقَّ تُقَاتِهِ﴾"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "يكون انتقاء الشبهات إذا أصابت النجاسة جزءاً من الثوب، ولم يعلم صاحبه موضعها بغسل:", options: ["جزء من الثوب", "نصف الثوب", "أكثر الثوب", "الثوب كله"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "من صور الكفر العملي التي تخرج صاحبها من الإسلام:", options: ["إنكار ركن من أركان الإيمان", "سب الذات الإلهية", "إنكار حكم قطعي معلوم من الدين بالضرورة", "قتال المسلم للمسلم"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "مبدأ الإسلام الذي دعا إليه قول الله تعالى: ﴿يَا أَيُّهَا النَّاسُ إِنَّا خَلَقْنَاكُمْ مِنْ ذَكَرٍ وَأُنْثَى...﴾، هو:", options: ["المساواة", "الأمن", "الحرية", "تسخير الكون"], correct: 0, subject: "🕋 تربية إسلامية" },
+            { question: "حكم عدول أحد الخاطبين عن الخطبة إذا اعتقد بعدم وجود مصلحة من هذا الزواج، هو:", options: ["واجب", "مندوب", "مباح", "حرام"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "من صور الجهاد بالمعنى العام:", options: ["القتال في سبيل الله", "دعوة الناس إلى الخير", "بناء المصانع الحربية", "الإعلام والتعبئة المعنوية"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "من جوانب خدمة القرآن الكريم في زمن الخليفة الراشد علي بن أبي طالب رضي الله عنه:", options: ["جمع القرآن الكريم", "نسخ القرآن الكريم", "ضبط المصحف", "تنقيط الحروف المتشابهة"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "واحدة من العبارات الآتية صحيحة فيما يتعلق بالعزيمة والرخصة:", options: ["العزيمة هي الأصل والرخصة استثناء", "الرخصة هي الأصل والعزيمة استثناء", "العزيمة والرخصة كلتاهما أصل", "الرخصة لا يجوز تركها إلا لعذر شرعي"], correct: 0, subject: "🕋 تربية إسلامية" },
+            { question: "سبب معركة مؤتة هو قتل شرحبيل بن عمرو الغساني الصحابي الجليل:", options: ["المغيرة بن شعبة", "الحارث بن عمير", "زيد بن حارثة", "عبد الله بن رواحة"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "حكم زواج المسلمة من غير المسلم:", options: ["مكروه", "مباح", "مندوب", "حرام"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "أم المؤمنين التي أشارت على النبي ﷺ يوم الحديبية أن يبدأ بالتحلل من إحرامه:", options: ["خديجة رضي الله عنها", "عائشة رضي الله عنها", "ميمونة رضي الله عنها", "أم سلمة رضي الله عنها"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "نزل قول الله تعالى: ﴿وَلَا تَحْسَبَنَّ الَّذِينَ قُتِلُوا فِي سَبِيلِ اللَّهِ أَمْوَاتًا...﴾ بعد معركة:", options: ["مؤتة", "أحد", "بدر", "تبوك"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "المراد بـ 'كثرة السؤال' الوارد في حديث النبي ﷺ: 'إن الله يرضى لكم...'، هو الإكثار من:", options: ["سؤال أهل العلم", "السؤال في غير حاجة", "دعاء الله تعالى", "طلب الدعاء من الناس"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "سبب عزم النبي ﷺ على فتح مكة، هو:", options: ["إجبار قريش على الدخول في الإسلام", "الانتقام لما حصل للمسلمين في معركة أحد", "استرجاع ما أخذته قريش من المسلمين", "نقض قريش صلح الحديبية"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "قول الله تعالى الذي يدل على إيجابية الشريعة الإسلامية في نظرتها للحياة:", options: ["﴿قَالَ وَمَنْ يَقْنَطُ مِنْ رَحْمَةِ رَبِّهِ إِلَّا الضَّالُّونَ﴾", "﴿وَمَنْ يُؤْمِنْ بِاللَّهِ يَهْدِ قَلْبَهُ﴾", "﴿فَإِذَا قُضِيَتِ الصَّلَاةُ فَانْتَشِرُوا فِي الْأَرْضِ وَابْتَغُوا مِنْ فَضْلِ اللَّهِ﴾", "﴿وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَى﴾"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "الترتيب الصحيح للولي عن المرأة في الزواج، هو:", options: ["الأب، الأخ الشقيق، الجد، الأخ لأب", "الأب، الجد، الأخ الشقيق، الأخ لأب", "الأب، الأخ الشقيق، الأخ لأب، الجد", "الأب، الجد، الأخ لأب، الأخ الشقيق"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "الحكم الشرعي في عمل المرأة وفق الضوابط الشرعية:", options: ["واجب", "مندوب", "مكروه", "مباح"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "يشير قول الله تعالى في سورة الروم ﴿وَابْتَغُوا مِنْ فَضْلِهِ﴾ إلى الدعوة في طلب:", options: ["العلم", "الرزق", "الزواج", "الغيث"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "من الأحكام التي وردت في السنة النبوية ولم ترد في القرآن الكريم حرمة:", options: ["الجمع بين المرأة وخالتها", "أكل أموال اليتيم", "الجمع بين المرأة وأختها", "أكل أموال الناس بالباطل"], correct: 0, subject: "🕋 تربية إسلامية" },
+            { question: "من القواعد الفقهية المستندة إلى العرف:", options: ["الضرورات تبيح المحظورات", "العادة محكمة", "المشقة تجلب التيسير", "لا ضرر ولا ضرار"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "من الحقوق المشتركة بين الزوجين:", options: ["الإرث", "المهر", "النفقة", "الطاعة"], correct: 0, subject: "🕋 تربية إسلامية" },
+            { question: "يدل قول الله تعالى: ﴿فَيَغْفِرُ لِمَنْ يَشَاءُ وَيُعَذِّبُ مَنْ يَشَاءُ﴾، على:", options: ["كمال قدرة الله تعالى", "رحمة الله تعالى", "سعة علم الله تعالى", "سعة ملك الله تعالى"], correct: 0, subject: "🕋 تربية إسلامية" },
+            { question: "المفهوم الذي يُقصد به أن الله تعالى خلق المخلوقات وأرشدها إلى ما يُصلح شأنها ومعاشها:", options: ["السببية", "الإتقان", "الهداية", "الفطرة"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "من الأمثلة على الإعجاز العلمي في القرآن الكريم:", options: ["القصاص", "تقديم لفظ السارق على السارقة", "المواريث", "أطوار خلق الجنين"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "الحكم الشرعي في الأمر بالمعروف والنهي عن المنكر:", options: ["فرض عين", "فرض كفاية", "سنة مؤكدة", "مستحب"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "قول الله تعالى الذي يشير إلى ما يحصل عند النفخة الأولى من أحداث، هو:", options: ["﴿إِذَا السَّمَاءُ انْفَطَرَتْ﴾", "﴿يَوْمَ تَشَقَّقُ الْأَرْضُ عَنْهُمْ سِرَاعًا﴾", "﴿وَنَضَعُ الْمَوازِينَ الْقِسْطَ﴾", "﴿وَسِيقَ الَّذِينَ اتَّقَوْا رَبَّهُمْ إِلَى الْجَنَّةِ﴾"], correct: 0, subject: "🕋 تربية إسلامية" },
+            { question: "إحدى المسائل الآتية يجوز فيها الاجتهاد:", options: ["مقدار نصاب الورثة", "التبرع بالأعضاء", "وجوب الصلوات الخمس", "أركان الإيمان"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "المفهوم الذي يدل على المنفعة التي تحصل للناس عن طريق جلب النفع لهم أو دفع الضرر عنهم:", options: ["الحاجيات", "الوسطية", "التحسينات", "المصلحة"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "يُطلق على كتب الحديث الشريف التي صُنفت بحسب أسماء الرواة من الصحابة الكرام:", options: ["الصحاح", "المسانيد", "السنن", "الجوامع"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "كان من منهج النبي ﷺ في حياته، أن:", options: ["يصوم الدهر ولا يفطر", "يعتزل النساء", "يصوم ويفطر", "يصلي ولا يرقد"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "الصحابي الجليل الذي كان أكثر المنفقين في تجهيز جيش العسرة، هو:", options: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان", "علي بن أبي طالب"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "مناقشة إحدى الصحابيات سيدنا عمر بن الخطاب في مسألة تحديد مهور النساء يُعد مثالاً على حق:", options: ["المشاركة في صنع القرار", "تقديم النصيحة لولي الأمر", "المشاورة في الرأي العام", "ممارسة الحق في إعطاء الأمان"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "جميع ما يأتي يتعلق بالوصية، ما عدا:", options: ["أن لا تزيد عن الثلث", "جواز الرجوع عنها في حياة الموصي", "أن لا تكون لوارث", "بطلانها بموت الموصي قبل الموصى له"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "توفي رجل وعنده زوجة وولدان، فإن نصيب الزوجة من الميراث:", options: ["النصف", "الربع", "الثلث", "الثمن"], correct: 3, subject: "🕋 تربية إسلامية" },
+            { question: "مجال الوسطية الذي يشير إليه قول الله تعالى: ﴿قَدْ أَفْلَحَ مَنْ زَكَّاهَا﴾، هو:", options: ["الاعتقاد", "الأخلاق", "التشريع", "المعاملات"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "من الأوقاف العلمية التي أوقفها جلالة الملك عبد الله الثاني وقفية الإمام السيوطي في:", options: ["مسجد السلط الكبير", "المسجد الحسيني الكبير", "المسجد الأقصى المبارك", "مسجد الحسين بن طلال"], correct: 1, subject: "🕋 تربية إسلامية" },
+            { question: "من الأحكام الشرعية التي تقع في مرتبة التحسينات:", options: ["نوافل الطاعات", "تحريم السرقة", "مشروعية الزواج", "إباحة الجمع بين الصلوات للمسافر"], correct: 0, subject: "🕋 تربية إسلامية" },
+            { question: "يشير قول الله تعالى: ﴿وَأَقِمِ الصَّلَاةَ إِنَّ الصَّلَاةَ تَنْهَى عَنِ الْفَحْشَاءِ وَالْمُنْكَرِ﴾، إلى:", options: ["تطبيق العقوبات على مرتكب الجريمة", "معالجة أسباب ارتكاب الجريمة", "تعميق الإيمان بالله تعالى", "تعميق انتماء الفرد إلى وطنه"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "في قول النبي ﷺ في حجة الوداع: 'ألا كل شيء من أمر الجاهلية تحت قدمي موضوع...'، تأكيد على:", options: ["مبدأ المساواة", "حرمة الربا", "حرمة الثأر", "نبذ الفرقة"], correct: 2, subject: "🕋 تربية إسلامية" },
+            { question: "يدل قول الله تعالى: ﴿هُوَ الَّذِي جَعَلَ لَكُمُ الْأَرْضَ ذَلُولًا فَامْشُوا فِي مَنَاكِبِهَا﴾، على حق الإنسان في:", options: ["التملك", "التعليم", "الحرية", "العمل"], correct: 3, subject: "🕋 تربية إسلامية" }
+        ];
+
+        // التاريخ - 80 سؤال (عينة من ملفك)
+        const historyQuestions = [
+            { question: "تبدأ عصور ما قبل التاريخ من نشأة الإنسان على الأرض حتى:", options: ["بداية استخدام معدن البرونز", "بداية ظهور دويلات المدن", "بداية اختراع الكتابة", "بداية استخدام معدن النحاس"], correct: 2, subject: "🏛️ تاريخ" },
+            { question: "الترتيب الصحيح لأبرز الإنجازات الحضارية في العصور الحجرية، هو:", options: ["اكتشاف الزراعة وإنتاج الطعام، اكتشاف النار، اختراع الكتابة", "اكتشاف الزراعة وإنتاج الطعام، تدجين الحيوانات، اختراع الكتابة", "اختراع الكتابة، اكتشاف النار وصهر المعادن، تدجين الحيوانات", "اختراع الكتابة، تدجين الحيوانات، اكتشاف النار وصهر المعادن"], correct: 0, subject: "🏛️ تاريخ" },
+            { question: "واحدة مما يأتي تُعدّ صحيحة فيما يتعلق بمسلة ميشع:", options: ["مذكور عليها أسماء ثلاثة ملوك عمونيين", "محفوظة في المتحف البريطاني", "توجد منها نُسخٌ أخرى موجودة في معظم المتاحف الأردنية", "نُقشت عليها أهم انتصارات وأعمال الملك كاموشيت"], correct: 2, subject: "🏛️ تاريخ" },
+            { question: "كل ما يأتي من أسباب اتخاذ الأنباط مدينة البترا عاصمة لهم، ما عدا:", options: ["موقعها على الطرق التجارية", "موقعها الحصين بين الجبال", "قربها من ينابيع المياه", "بعدها عن ممالك الآشوريين والبابليين"], correct: 3, subject: "🏛️ تاريخ" },
+            { question: "من أسباب ضعف مملكة الأنباط:", options: ["نقل اليونان مركز التجارة إلى مملكة أدوم", "ضعف بعض ملوك الأنباط", "سيطرة البابليين على الطرق التجارية", "الاحتلال اليوناني لبلاد الشام عام 64 ق.م"], correct: 1, subject: "🏛️ تاريخ" },
+            { question: "الموقع الأثري المتبقي بسبب الحروب والكوارث الطبيعية من آثار الفترة اليونانية في الأردن، هو:", options: ["قصر العبد", "شارع الأعمدة", "المغطس", "قصر البنت"], correct: 0, subject: "🏛️ تاريخ" },
+            { question: "الكنيسة ذات التخطيط البازيليكي، والتي تتمتع بأرضيات فسيفسائية، هي:", options: ["مار إلياس", "كنيسة المعمدان", "أم قيس", "أم الرصاص"], correct: 3, subject: "🏛️ تاريخ" },
+            { question: "ترتيب أمراء الجيش الذي جهّزه الرسول محمد ﷺ في معركة مؤتة، هو:", options: ["زيد بن حارثة، جعفر بن أبي طالب، عبد الله بن رواحة", "عبد الله بن رواحة، جعفر بن أبي طالب، زيد بن حارثة", "جعفر بن أبي طالب، عبد الله بن رواحة، زيد بن حارثة", "زيد بن حارثة، عبد الله بن رواحة، جعفر بن أبي طالب"], correct: 0, subject: "🏛️ تاريخ" },
+            { question: "تُعدّ معركة اليرموك من المعارك الفاصلة في تاريخ بلاد الشام، بسبب:", options: ["حماية طريق الحج الشامي", "فتح مدن بلاد الشام جميعها وانتشار الإسلام فيها", "حماية طريق التجارة إلى شبه الجزيرة العربية", "إنهاء الحكم اليوناني لبلاد الشام"], correct: 1, subject: "🏛️ تاريخ" },
+            { question: "كل ما يأتي من أغراض بناء الأمويين قصوراً لهم في بادية الشام، ما عدا:", options: ["ممارسة هواية الصيد", "الاستجمام والترويح عن النفس", "التواصل مع القبائل العربية الموالية للحكم العباسي", "خدمة الحجاج المسلمين والمسافرين"], correct: 2, subject: "🏛️ تاريخ" },
+            { question: "المنطقة التي اتخذها محمد بن علي مركزاً لدعوته السرية لإحلال بني العباس محل بني أمية هي:", options: ["أذرح", "القسطل", "الحميمة", "الجرباء"], correct: 2, subject: "🏛️ تاريخ" },
+            { question: "العام الذي حدثت فيه معركة حطين، هو:", options: ["492هـ / 1099م", "583هـ / 1187م", "569هـ / 1173م", "579هـ / 1174م"], correct: 1, subject: "🏛️ تاريخ" },
+            { question: "الكتاب الذي ألفه المؤرخ جمال الدين محمد بن واصل، هو:", options: ["تاريخ مرآة الزمان", "مختصر المهذب في الفقه", "العمدة في صناعة الجراح", "مفرج الكروب في أخبار بني أيوب"], correct: 3, subject: "🏛️ تاريخ" },
+            { question: "يُطلق على الضرائب التي كانت تُفرض على البضائع المستوردة في العصر المملوكي:", options: ["التيمار", "المكوس", "العشور", "الخراج"], correct: 1, subject: "🏛️ تاريخ" },
+            { question: "أبقت الدولة العثمانية على الزعماء المحليين الذين سادوا في العصر المملوكي، بسبب:", options: ["بُعد تلك المناطق عن عاصمة الدولة العثمانية", "معرفة الزعماء المحليين للمنطقة", "انشغال الدولة في حروبها المتتالية في أوروبا", "دخول تلك المناطق في الفوضى وانعدام الأمن"], correct: 0, subject: "🏛️ تاريخ" },
+            { question: "كل ما يأتي من أسباب بناء الخط الحديدي الحجازي، ما عدا:", options: ["نشر العمران حول محطات الخط", "تحصيل المزيد من الضرائب", "منع التمرد والخروج عن طاعة الدولة", "تأمين نقل المحاصيل الزراعية"], correct: 3, subject: "🏛️ تاريخ" }
+        ];
+
+        // اللغة العربية - 56 سؤال (من ملفك)
+        const arabicQuestions = [
+            { question: "معنى (تُؤْفَكُونَ) المخطوط تحتها في قوله تعالى: ﴿ذَٰلِكُمُ اللَّهُ ۖ فَأَنَّىٰ تُؤْفَكُونَ﴾ هو:", options: ["تُسِيئُونَ إِلَى الْآخَرِينَ", "تُصَدُّونَ عَنِ السَّبِيلِ", "تَرْجُونَ اللهَ تَعَالَى", "تَمْتَنِعُونَ عَنِ المَعَاصِي"], correct: 1, subject: "🇸🇦 عربي" },
+            { question: "المعنى البلاغي الذي خرج إليه الاستفهام في قوله تعالى: ﴿وَمَنْ أَحْسَنُ قَوْلًا مِمَّنْ دَعَا إِلَى اللَّهِ وَعَمِلَ صَالِحًا﴾ هو:", options: ["النَّفْي", "التَّهْوِيل", "الإِنْكَار", "التَّمَنِّي"], correct: 0, subject: "🇸🇦 عربي" },
+            { question: "السطر الشعري من قصيدة (وشوشة العاشقين) الأقرب في مضمونه إلى مضمون ما تحته خط في البيت (وأنتِ عند ظلالِ 'العينِ' غانيةٌ / ألقَتْ على جِذرِها من سِحْرِها حُجُبَا):", options: ["أُحبُّكِ ما وَشْوَشَ الماءُ", "أُمي وعاشقتي ونصيبي", "مُزدانةً بالوسامةِ والحبِّ", "باسِقَةً كالصَّنَوْبَرِ"], correct: 0, subject: "🇸🇦 عربي" },
+            { question: "وصَفَ الشاعرُ مدينة عمان في البيت الشعري (باحتْ بأحلامِنا النَّجوى وردَّدَها / واديكِ، وانطلقتْ خلفَ البِطاحِ رُبى) بأنها:", options: ["متنوعة التضاريس", "صامدة رغم التحديات", "مركز الحضارة", "متبخترة ومتمايلة في المَشْي"], correct: 0, subject: "🇸🇦 عربي" },
+            { question: "البيت الشعري الذي احتوى على كلمة تتضمن 'عنصر الصوت' مما تحته خط في قصيدة (عمان):", options: ["عمانُ، يا حلمَ فجرٍ لاحَ واحتجبا", "وملتُ نحوَكِ بالآهاتِ أكتمُها", "يا أختَ عُمري، أنسى أنَّ مجلسنا", "وصفِّقي مَرَحاً واستبشري فرحاً"], correct: 1, subject: "🇸🇦 عربي" },
+            { question: "المرادف الذي يؤدي معنى (الخوف الشديد) مما تحته خط في نص (الزهايمر):", options: ["فقدان الذاكرة وهذيان", "الفقدان المطرد للذاكرة", "الهَلْوَسَة", "هَلَع وصُراخ"], correct: 3, subject: "🇸🇦 عربي" },
+            { question: "بناءً على العبارة (ويفقد المريض القدرة على التواصل لصعوبة تذكر المفردات...) فإن نتيجة تدهور التناسق الحركي هي:", options: ["فقدان القدرة على التواصل", "صعوبة تذكر المفردات", "صعوبة تعرف الأقارب والأصدقاء", "زيادة احتمالية الوقوع والإصابات"], correct: 3, subject: "🇸🇦 عربي" },
+            { question: "بناءً على دراستك لنص (الإعلام ومشروع النهوض...) فإن العبارات الآتية جميعها صحيحة، ما عدا:", options: ["يُعدُّ الإعلام ناقلاً للخبر", "للغة الإعلام أثر في الارتقاء بلغة الجمهور", "أفضل طريقة لتعليم اللغة خلق بيئة سماعية تنطق فيها العربية الفصيحة", "أحدثت الثورة الهائلة في عصر المعلومات تغيرات جوهرية في دور الإعلام"], correct: 2, subject: "🇸🇦 عربي" },
+            { question: "المقصود بالعبارة (وتاريخ البشرية من عصور نقش الأحجار إلى بث الأقمار...) من نص (الإعلام ومشروع النهوض):", options: ["بيان دور الأقمار الصناعية في تطور وسائل الاتصال", "مرافقة الإعلام ووسائل الاتصال للإنسان منذ وجوده", "اهتمام الإنسان بوسائل الاتصال في زمن الأقمار الصناعية", "توضيح أثر وسائل الاتصال في نشوء مهن مثل نقش الأحجار"], correct: 1, subject: "🇸🇦 عربي" }
+        ];
+
+        // اللغة الإنجليزية - 28 سؤال (من ملفك)
         const englishQuestions = [
             { question: "I am completely ............ about my exam results – I never thought I’d do so well!", options: ["inspirational", "slimy", "ecstatic", "hypocritical"], correct: 2, subject: "🇬🇧 إنجليزي" },
             { question: "We couldn't use our mobile phones in the desert, but started to............ signals when we went into the mountains.", options: ["show off", "pick up", "point out", "calm down"], correct: 1, subject: "🇬🇧 إنجليزي" },
             { question: "It is claimed that ............ from cars kill twice as many people as accidents caused by vehicles.", options: ["wind turbines", "fossil fuels", "endangered species", "exhaust fumes"], correct: 3, subject: "🇬🇧 إنجليزي" },
-            { question: "The opposite of 'expensive' is:", options: ["cheap", "costly", "dear", "pricey"], correct: 0, subject: "🇬🇧 إنجليزي" },
-            { question: "What is the past tense of 'go'?", options: ["goed", "went", "gone", "going"], correct: 1, subject: "🇬🇧 إنجليزي" }
+            { question: "Tigers – the largest living cats on Earth – are at the top of their food chain so they have no ............ predators.", options: ["torrential", "scorching", "bewildered", "natural"], correct: 3, subject: "🇬🇧 إنجليزي" },
+            { question: "Rami ............; whenever arguments happen, he resolves conflicts.", options: ["blows things out of proportion", "spells out", "is the peacemaker", "bursts into tears"], correct: 2, subject: "🇬🇧 إنجليزي" },
+            { question: "Rawan is so ............; she's determined to get what she wants.", options: ["pushy", "immature", "modest", "decent"], correct: 0, subject: "🇬🇧 إنجليزي" },
+            { question: "I have two lamps in my bedroom. My father always asks me to ............ before going to bed.", options: ["switch off them", "switch them off", "off them switch", "them switch off"], correct: 1, subject: "🇬🇧 إنجليزي" },
+            { question: "The underlined words (a bit) in: 'Summer in Singapore is... only a bit hotter than in Egypt' can be replaced with:", options: ["nothing like", "slightly", "considerably", "a lot"], correct: 1, subject: "🇬🇧 إنجليزي" },
+            { question: "Harmful chemicals, fertilisers, and pollution would ............ fresh water supplies.", options: ["provide", "contaminate", "install", "clarify"], correct: 1, subject: "🇬🇧 إنجليزي" },
+            { question: "Keep your argument simple and try not to ............ it.", options: ["complicated", "complication", "complicating", "complicate"], correct: 3, subject: "🇬🇧 إنجليزي" }
         ];
 
-        const arabicQuestions = [
-            { question: "معنى (تُؤْفَكُونَ) في قوله تعالى: ﴿ذَٰلِكُمُ اللَّهُ ۖ فَأَنَّىٰ تُؤْفَكُونَ﴾ هو:", options: ["تُسِيئُونَ إِلَى الْآخَرِينَ", "تُصَدُّونَ عَنِ السَّبِيلِ", "تَرْجُونَ اللهَ تَعَالَى", "تَمْتَنِعُونَ عَنِ المَعَاصِي"], correct: 1, subject: "🇸🇦 عربي" },
-            { question: "المعنى البلاغي الذي خرج إليه الاستفهام في قوله تعالى: ﴿وَمَنْ أَحْسَنُ قَوْلًا مِمَّنْ دَعَا إِلَى اللَّهِ وَعَمِلَ صَالِحًا﴾ هو:", options: ["النَّفْي", "التَّهْوِيل", "الإِنْكَار", "التَّمَنِّي"], correct: 0, subject: "🇸🇦 عربي" },
-            { question: "وصَفَ الشاعرُ مدينة عمان في البيت الشعري (باحتْ بأحلامِنا النَّجوى وردَّدَها / واديكِ، وانطلقتْ خلفَ البِطاحِ رُبى) بأنها:", options: ["متنوعة التضاريس", "صامدة رغم التحديات", "مركز الحضارة", "متبخترة ومتمايلة في المَشْي"], correct: 0, subject: "🇸🇦 عربي" },
-            { question: "جمع كلمة 'كتاب' هو:", options: ["كتبة", "كتب", "كتابات", "مكتب"], correct: 1, subject: "🇸🇦 عربي" },
-            { question: "المضاد لكلمة 'جديد' هو:", options: ["حديث", "قديم", "عتيق", "جديد"], correct: 1, subject: "🇸🇦 عربي" }
-        ];
-
-        const islamicQuestions = [
-            { question: "قول الله تعالى الذي يشير إلى الاعتبار من الأمم السابقة:", options: ["﴿وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا﴾", "﴿وَلَا تَكُونُوا كَالَّذِينَ تَفَرَّقُوا وَاخْتَلَفُوا مِنْ بَعْدِ مَا جَاءَهُمُ الْبَيِّنَاتُ﴾", "﴿وَلْتَكُنْ مِنْكُمْ أُمَّةٌ يَدْعُونَ إِلَى الْخَيْرِ﴾", "﴿يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ حَقَّ تُقَاتِهِ﴾"], correct: 1, subject: "🕋 تربية إسلامية" },
-            { question: "يكون انتقاء الشبهات إذا أصابت النجاسة جزءاً من الثوب، ولم يعلم صاحبه موضعها بغسل:", options: ["جزء من الثوب", "نصف الثوب", "أكثر الثوب", "الثوب كله"], correct: 3, subject: "🕋 تربية إسلامية" },
-            { question: "من صور الكفر العملي التي تخرج صاحبها من الإسلام:", options: ["إنكار ركن من أركان الإيمان", "سب الذات الإلهية", "إنكار حكم قطعي معلوم من الدين بالضرورة", "قتال المسلم للمسلم"], correct: 1, subject: "🕋 تربية إسلامية" },
-            { question: "عدد أركان الإسلام:", options: ["ثلاثة", "أربعة", "خمسة", "ستة"], correct: 2, subject: "🕋 تربية إسلامية" },
-            { question: "أول ما خلق الله:", options: ["العرش", "القلم", "السماء", "الأرض"], correct: 1, subject: "🕋 تربية إسلامية" }
-        ];
-
-        const historyQuestions = [
-            { question: "تبدأ عصور ما قبل التاريخ من نشأة الإنسان على الأرض حتى:", options: ["بداية استخدام معدن البرونز", "بداية ظهور دويلات المدن", "بداية اختراع الكتابة", "بداية استخدام معدن النحاس"], correct: 2, subject: "🏛️ تاريخ" },
-            { question: "الترتيب الصحيح لأبرز الإنجازات الحضارية في العصور الحجرية:", options: ["اكتشاف الزراعة وإنتاج الطعام، اكتشاف النار، اختراع الكتابة", "اكتشاف الزراعة وإنتاج الطعام، تدجين الحيوانات، اختراع الكتابة", "اختراع الكتابة، اكتشاف النار وصهر المعادن، تدجين الحيوانات", "اختراع الكتابة، تدجين الحيوانات، اكتشاف النار وصهر المعادن"], correct: 0, subject: "🏛️ تاريخ" },
-            { question: "معركة اليرموك كانت بين المسلمين و:", options: ["الفرس", "الروم", "المغول", "الصليبيين"], correct: 1, subject: "🏛️ تاريخ" },
-            { question: "متى استقل الأردن؟", options: ["1946", "1948", "1950", "1952"], correct: 0, subject: "🏛️ تاريخ" },
-            { question: "من هو قائد معركة مؤتة؟", options: ["زيد بن حارثة", "خالد بن الوليد", "أبو بكر الصديق", "عمر بن الخطاب"], correct: 0, subject: "🏛️ تاريخ" }
-        ];
-
-        // دالة لاختيار أسئلة متوازنة (إنجليزي، عربي، دين، تاريخ، ثم يعيد)
-        function getBalancedQuestions(count) {
-            let result = [];
-            let englishIndex = 0, arabicIndex = 0, islamicIndex = 0, historyIndex = 0;
-            
-            // خلط كل مصفوفة
-            function shuffle(arr) {
-                for(let i = arr.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [arr[i], arr[j]] = [arr[j], arr[i]];
-                }
-                return arr;
-            }
-            
-            const shuffledEnglish = shuffle([...englishQuestions]);
-            const shuffledArabic = shuffle([...arabicQuestions]);
-            const shuffledIslamic = shuffle([...islamicQuestions]);
-            const shuffledHistory = shuffle([...historyQuestions]);
-            
-            let subjects = ['english', 'arabic', 'islamic', 'history'];
-            let subjectIndex = 0;
-            
-            for(let i = 0; i < count; i++) {
-                let currentSubject = subjects[subjectIndex % 4];
-                
-                if(currentSubject === 'english' && englishIndex < shuffledEnglish.length) {
-                    result.push(shuffledEnglish[englishIndex++]);
-                } else if(currentSubject === 'arabic' && arabicIndex < shuffledArabic.length) {
-                    result.push(shuffledArabic[arabicIndex++]);
-                } else if(currentSubject === 'islamic' && islamicIndex < shuffledIslamic.length) {
-                    result.push(shuffledIslamic[islamicIndex++]);
-                } else if(currentSubject === 'history' && historyIndex < shuffledHistory.length) {
-                    result.push(shuffledHistory[historyIndex++]);
-                } else {
-                    // لو خلصت أسئلة من مادة معينة، ناخذ من المواد الثانية
-                    if(englishIndex < shuffledEnglish.length) result.push(shuffledEnglish[englishIndex++]);
-                    else if(arabicIndex < shuffledArabic.length) result.push(shuffledArabic[arabicIndex++]);
-                    else if(islamicIndex < shuffledIslamic.length) result.push(shuffledIslamic[islamicIndex++]);
-                    else if(historyIndex < shuffledHistory.length) result.push(shuffledHistory[historyIndex++]);
-                }
-                subjectIndex++;
-            }
-            
-            return result;
-        }
-
-        let fullQuestions = getBalancedQuestions(50);
+        // دمج كل الأسئلة
+        let allQuestions = [...islamicQuestions, ...historyQuestions, ...arabicQuestions, ...englishQuestions];
 
         function shuffleArray(arr) {
             for(let i = arr.length - 1; i > 0; i--) {
@@ -631,7 +612,34 @@
             return arr;
         }
 
-        // ========== الحالة ==========
+        // دالة اختيار أسئلة متوازنة
+        function getBalancedQuestions(count) {
+            let result = [];
+            let subjects = [islamicQuestions, historyQuestions, arabicQuestions, englishQuestions];
+            let indices = [0, 0, 0, 0];
+            
+            // خلط كل مصفوفة
+            let shuffledSubjects = subjects.map(s => shuffleArray([...s]));
+            
+            for(let i = 0; i < count; i++) {
+                let subjectIndex = i % 4;
+                let currentSubject = shuffledSubjects[subjectIndex];
+                if(indices[subjectIndex] < currentSubject.length) {
+                    result.push(currentSubject[indices[subjectIndex]++]);
+                } else {
+                    // لو خلصت أسئلة المادة، ناخذ من المواد الثانية
+                    for(let j = 0; j < 4; j++) {
+                        if(indices[j] < shuffledSubjects[j].length) {
+                            result.push(shuffledSubjects[j][indices[j]++]);
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        // باقي الكود نفسه...
         let selectedMode = null;
         let currentQuestions = [];
         let currentIndex = 0;
@@ -639,14 +647,11 @@
         let answered = false;
         let userAnswers = [];
         let quizActive = false;
-        
         let totalCorrect = 0;
         let totalWrong = 0;
-        
         let countdownEndTime = null;
         let countdownInterval = null;
-        
-        // DOM Elements
+
         const modeSection = document.getElementById('modeSection');
         const confirmSection = document.getElementById('confirmSection');
         const startBtn = document.getElementById('startBtn');
@@ -658,14 +663,14 @@
         const nextNote = document.getElementById('nextNote');
         const correctCountSpan = document.getElementById('correctCount');
         const wrongCountSpan = document.getElementById('wrongCount');
-        
+
         function updateStatsDisplay() {
             correctCountSpan.textContent = totalCorrect;
             wrongCountSpan.textContent = totalWrong;
             localStorage.setItem('totalCorrect', totalCorrect);
             localStorage.setItem('totalWrong', totalWrong);
         }
-        
+
         function loadStats() {
             const savedCorrect = localStorage.getItem('totalCorrect');
             const savedWrong = localStorage.getItem('totalWrong');
@@ -673,7 +678,7 @@
             if(savedWrong) totalWrong = parseInt(savedWrong);
             updateStatsDisplay();
         }
-        
+
         function loadCountdown() {
             const saved = localStorage.getItem('countdownEndTime');
             if(saved) {
@@ -686,12 +691,12 @@
             updateTimerDisplay();
             startCountdown();
         }
-        
+
         function startCountdown() {
             if(countdownInterval) clearInterval(countdownInterval);
             countdownInterval = setInterval(updateTimerDisplay, 1000);
         }
-        
+
         function updateTimerDisplay() {
             if(countdownEndTime && countdownEndTime > Date.now()) {
                 const diff = countdownEndTime - Date.now();
@@ -700,62 +705,51 @@
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
                 timerDisplay.textContent = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
                 nextNote.textContent = '⏳ سوف يتم تحميل السؤال التالي بعد الفترة المقطوعة';
-                
                 document.querySelectorAll('.mode-btn').forEach(btn => {
                     btn.style.opacity = '0.5';
                     btn.style.pointerEvents = 'none';
                 });
                 return;
             }
-            
             timerDisplay.textContent = '00:00:00';
             nextNote.textContent = '📢 يمكنك بدء التحدي الآن! اختر عدد الأسئلة';
-            
             document.querySelectorAll('.mode-btn').forEach(btn => {
                 btn.style.opacity = '1';
                 btn.style.pointerEvents = 'auto';
             });
         }
-        
+
         function resetCountdown() {
             const now = Date.now();
             countdownEndTime = now + (24 * 60 * 60 * 1000);
             localStorage.setItem('countdownEndTime', countdownEndTime);
             updateTimerDisplay();
         }
-        
+
         function selectMode(mode) {
             selectedMode = mode;
-            
             document.querySelectorAll('.mode-btn').forEach(btn => {
-                if(btn.dataset.mode !== mode) {
-                    btn.classList.add('hidden');
-                }
+                if(btn.dataset.mode !== mode) btn.classList.add('hidden');
             });
-            
             modeSection.classList.add('hidden');
             confirmSection.classList.remove('hidden');
         }
-        
+
         function resetModeSelection() {
-            document.querySelectorAll('.mode-btn').forEach(btn => {
-                btn.classList.remove('hidden');
-            });
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('hidden'));
             modeSection.classList.remove('hidden');
             confirmSection.classList.add('hidden');
             startBtn.classList.add('hidden');
             selectedMode = null;
         }
-        
+
         confirmYes.onclick = () => {
             confirmSection.classList.add('hidden');
             startBtn.classList.remove('hidden');
         };
-        
-        confirmNo.onclick = () => {
-            resetModeSelection();
-        };
-        
+
+        confirmNo.onclick = () => resetModeSelection();
+
         settingsBtn.onclick = () => {
             if(quizActive) {
                 if(confirm('هل تريد إنهاء الاختبار الحالي والعودة للإعدادات؟')) {
@@ -767,10 +761,9 @@
                 resetModeSelection();
             }
         };
-        
+
         startBtn.onclick = () => {
             if(!selectedMode) return;
-            
             let questionCount = parseInt(selectedMode);
             currentQuestions = getBalancedQuestions(questionCount);
             currentIndex = 0;
@@ -778,27 +771,22 @@
             answered = false;
             userAnswers = [];
             quizActive = true;
-            
             startBtn.classList.add('hidden');
             questionBox.classList.remove('hidden');
-            
             showCurrentQuestion();
         };
-        
+
         function showCurrentQuestion() {
             if(currentIndex >= currentQuestions.length) {
                 showResults();
                 return;
             }
-            
             const question = currentQuestions[currentIndex];
             document.getElementById('questionText').textContent = question.question;
             document.getElementById('subjectBadge').textContent = question.subject;
             document.getElementById('questionCounter').textContent = `السؤال ${currentIndex + 1} من ${currentQuestions.length}`;
-            
             const progress = (currentIndex / currentQuestions.length) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
-            
             const optionsDiv = document.getElementById('optionsContainer');
             optionsDiv.innerHTML = '';
             question.options.forEach((opt, idx) => {
@@ -815,10 +803,8 @@
                 };
                 optionsDiv.appendChild(optDiv);
             });
-            
             const submitBtn = document.getElementById('submitBtn');
             const nextBtn = document.getElementById('nextBtn');
-            
             if(answered) {
                 submitBtn.classList.add('hidden');
                 nextBtn.classList.remove('hidden');
@@ -827,37 +813,28 @@
                 nextBtn.classList.add('hidden');
             }
         }
-        
+
         function submitAnswer() {
             const selected = selectedAnswers[currentIndex];
             if(selected === null) {
                 alert('الرجاء اختيار إجابة');
                 return;
             }
-            
             const isCorrect = selected === currentQuestions[currentIndex].correct;
-            if(isCorrect) {
-                totalCorrect++;
-            } else {
-                totalWrong++;
-            }
+            if(isCorrect) totalCorrect++;
+            else totalWrong++;
             updateStatsDisplay();
-            
             userAnswers.push({
                 question: currentQuestions[currentIndex],
                 selected: selected,
                 correct: isCorrect
             });
-            
             answered = true;
             document.querySelectorAll('.option').forEach(opt => opt.classList.add('disabled'));
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            submitBtn.classList.add('hidden');
-            nextBtn.classList.remove('hidden');
+            document.getElementById('submitBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
         }
-        
+
         function nextQuestion() {
             if(currentIndex + 1 < currentQuestions.length) {
                 currentIndex++;
@@ -867,11 +844,10 @@
                 showResults();
             }
         }
-        
+
         function showResults() {
             const total = userAnswers.length;
             const correctCount = userAnswers.filter(a => a.correct).length;
-            
             const modal = document.createElement('div');
             modal.className = 'results-modal';
             modal.innerHTML = `
@@ -892,24 +868,21 @@
                 </div>
             `;
             document.body.appendChild(modal);
-            
             document.getElementById('exitBtn').onclick = () => {
                 modal.remove();
                 resetCountdown();
-                
                 quizActive = false;
                 questionBox.classList.add('hidden');
                 resetModeSelection();
             };
         }
-        
+
         document.getElementById('submitBtn').onclick = submitAnswer;
         document.getElementById('nextBtn').onclick = nextQuestion;
-        
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.onclick = () => selectMode(btn.dataset.mode);
         });
-        
+
         loadStats();
         loadCountdown();
     </script>
